@@ -1,0 +1,64 @@
+Step 1: Project Scoping & Environment Setup
+Documentation: Create a README.md. Define the problem, the tech stack (Python, PySpark/Dask, XGBoost/LightGBM), and the dataset source.
+
+Structure: Create your folder hierarchy:
+
+/data: (Add to .gitignore) for local raw/processed files.
+
+/notebooks: For Initial Data Exploration (EDA).
+
+/src: For modular Python scripts (Data cleaning, Training, Inference).
+
+/docs: For your presentation slides and architecture diagrams.
+
+Environment: Initialize a requirements.txt or environment.yml to manage dependencies.
+
+Step 2: Data Acquisition & Storage
+Download: Use the Kaggle API to pull the IEEE-CIS Fraud Detection or PaySim dataset.
+
+Local DB (Optional but Impressive): Instead of just CSVs, load the data into a PostgreSQL or Aiven instance to simulate a real-world banking environment.
+
+DVC (Data Version Control): If you want to be extra, use DVC to track data changes without uploading large files to GitHub.
+
+Step 3: Exploratory Data Analysis (EDA)
+Imbalance Analysis: Visualize the ratio of Fraud (1) vs. Legitimate (0).
+
+Correlation Heatmaps: Identify which features (Transaction Amount, Time, Card Type) correlate most with fraud.
+
+Anomaly Detection Patterns: Look for "outliers" (e.g., a €5,000 transaction at 3 AM from a new IP address).
+
+Step 4: Big Data Engineering (PySpark/Dask)
+Schema Definition: Explicitly define schemas for your Spark DataFrames to ensure type safety.
+
+Feature Engineering:
+
+Temporal Features: Hour of day, day of week.
+
+Behavioral Features: Calculate "Velocity" (e.g., Number of transactions by User X in the last hour).
+
+Geographical Features: Change in location from the previous transaction.
+
+Data Splitting: Use Time-Series Splitting (don't use random split!) because fraud patterns change over time.
+
+Step 5: Model Training & Handling Imbalance
+Baseline Model: Train a simple Logistic Regression as a benchmark.
+
+Advanced Model: Implement XGBoost or Random Forest within the Spark/Dask framework.
+
+Addressing Imbalance: Implement SMOTE or use the scale_pos_weight parameter in XGBoost to give more importance to the minority (fraud) class.
+
+Hyperparameter Tuning: Use Optuna or Spark's CrossValidator to find the best max_depth and learning_rate.
+
+Step 6: Evaluation & Metrics (The "Resume" Part)
+Beyond Accuracy: Generate a Confusion Matrix, Precision-Recall Curve, and AUPRC (Area Under Precision-Recall Curve).
+
+Feature Importance: Plot which features were most "predictive" of fraud (this is great for your slides).
+
+Threshold Tuning: Decide the "Cut-off" point—how many false alarms (False Positives) is the bank willing to accept to catch one fraud?
+
+Step 7: Deployment & Final Presentation
+API: Create a small FastAPI or Flask endpoint where you can "POST" a transaction JSON and get a "Fraud/Legitimate" prediction.
+
+Containerization: Write a Dockerfile so your project can run anywhere.
+
+Slides: Prepare your presentation focusing on the Technical Architecture and Business Impact (e.g., money saved).
